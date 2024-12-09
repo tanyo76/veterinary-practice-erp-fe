@@ -1,25 +1,42 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormAlert from "../feedback/FormAlert";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import FormErrorMessage from "../feedback/FormErrorMessage";
 import { useLoginMutation } from "../../services/auth.service";
 import { LoginFormInput } from "../../types/request-input-types/request-input-types";
 import { ESeverity } from "../../types/component-props/form-props";
-
+import { useEffect } from "react";
+import { setLocalstorageKey } from "../../utils/localstorage.utils";
+import { setAuthState } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-  const [login, { isError, isLoading, data, error }] = useLoginMutation();
+  const [login, { isError, isLoading, data, error, isSuccess }] =
+    useLoginMutation();
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<LoginFormInput>();
   const onSubmit: SubmitHandler<LoginFormInput> = (data) => {
-    console.log(data);
-    // login(data);
+    login(data);
   };
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSuccess) {
+      const values = getValues();
+      setLocalstorageKey("accessToken", data.token);
+      setLocalstorageKey("email", values.email);
+      dispatch(setAuthState({ accessToken: data.token, email: values.email }));
+      navigate("/dashboard");
+    }
+  }, [isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -30,7 +47,7 @@ const LoginForm = () => {
           variant="outlined"
           type="email"
           {...register("email", { required: true })}
-            disabled={isLoading}
+          disabled={isLoading}
         />
 
         {errors.email?.type === "required" && (
@@ -45,7 +62,7 @@ const LoginForm = () => {
           variant="outlined"
           {...register("password", { required: true })}
           type="password"
-            disabled={isLoading}
+          disabled={isLoading}
         />
         {errors.password?.type === "required" && (
           <FormErrorMessage errorMessage="Password is required" />
@@ -55,7 +72,7 @@ const LoginForm = () => {
       {isError && (
         <FormAlert
           severity={ESeverity.error}
-          message={(error as any).data.errors[0]}
+          message={(error as any).data.message}
         />
       )}
 

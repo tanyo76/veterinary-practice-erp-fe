@@ -8,7 +8,7 @@ import { RegisterFormInput } from "../../types/request-input-types/request-input
 import { ESeverity } from "../../types/component-props/form-props";
 
 const RegisterForm = () => {
-  const [signUp, { isLoading, isError, isSuccess, error, data }] =
+  const [signUp, { isLoading, isError, isSuccess, error }] =
     useRegisterMutation();
 
   const {
@@ -17,8 +17,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFormInput>();
   const onSubmit: SubmitHandler<RegisterFormInput> = (data) => {
-    console.log(data);
-    // signUp(data);
+    signUp(data);
   };
 
   return (
@@ -98,10 +97,13 @@ const RegisterForm = () => {
         </Box>
 
         {isError && (
-          <FormAlert
-            severity={ESeverity.error}
-            message={(error as any).data.errors}
-          />
+          <FormAlert severity={ESeverity.error} message={(error as any).data} />
+        )}
+
+        {isSuccess && (
+          <FormAlert severity={ESeverity.success} message={"Account created"}>
+            <NavLink to="/"> Login</NavLink>
+          </FormAlert>
         )}
 
         {isLoading ? (

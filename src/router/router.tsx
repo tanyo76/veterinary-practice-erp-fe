@@ -3,6 +3,7 @@ import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import PageNotFound from "../pages/404/NotFoundPage";
 import FormLayout from "../layouts/form/FormLayout";
+import Dashboard from "../pages/dashboard/Dashboard";
 
 const Router = () => {
   const routes = useRoutes([
@@ -27,6 +28,10 @@ const Router = () => {
           <RegisterPage />
         </FormLayout>
       ),
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
     },
     {
       path: "*",
