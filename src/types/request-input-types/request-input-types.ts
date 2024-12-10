@@ -4,6 +4,7 @@ export type RegisterFormInput = {
   email: string;
   password: string;
   confirmPassword: string;
+  role: string;
 };
 
 export type LoginFormInput = {

@@ -3,6 +3,7 @@ import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import PageNotFound from "../pages/404/NotFoundPage";
 import FormLayout from "../layouts/form/FormLayout";
+import DashboardLayout from "../layouts/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 
 const Router = () => {
@@ -31,7 +32,11 @@ const Router = () => {
     },
     {
       path: "/dashboard",
-      element: <Dashboard />,
+      element: (
+        <DashboardLayout>
+          <Dashboard />
+        </DashboardLayout>
+      ),
     },
     {
       path: "*",

@@ -28,6 +28,7 @@ const authSlice = createSlice({
     clearAuthState: () => {
       deleteLocalstorageKey("accessToken");
       deleteLocalstorageKey("email");
+      deleteLocalstorageKey("clinicId");
       return initialState;
     },
   },

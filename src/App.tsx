@@ -12,10 +12,13 @@ function App() {
   useEffect(() => {
     const accessToken = getLocalstorageKey("accessToken");
     const email = getLocalstorageKey("email");
+    const userId = getLocalstorageKey("userId");
 
-    if (accessToken && email) {
+    if (accessToken && email && !userId) {
       dispatch(setAuthState({ email, accessToken }));
       navigate("/dashboard");
+    } else if (accessToken && email && userId) {
+      navigate("/register");
     } else {
       navigate("/");
     }

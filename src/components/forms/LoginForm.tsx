@@ -32,6 +32,7 @@ const LoginForm = () => {
     if (isSuccess) {
       const values = getValues();
       setLocalstorageKey("accessToken", data.token);
+      setLocalstorageKey("clinicId", data.clinic);
       setLocalstorageKey("email", values.email);
       dispatch(setAuthState({ accessToken: data.token, email: values.email }));
       navigate("/dashboard");

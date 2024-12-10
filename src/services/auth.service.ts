@@ -5,6 +5,7 @@ const envConfig = import.meta.env;
 type AccessTokenResponse = {
   success: boolean;
   token: string;
+  clinic: string;
 };
 
 type LoginInput = {
