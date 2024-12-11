@@ -6,7 +6,11 @@ import {
 import { Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import AddExistingUserToClinicDialog from "../../components/dialogs/AddExistingUserDialog";
-import { toggleAddExistingUserToClinicDialog } from "../../store/slices/authSlice";
+import {
+  toggleAddExistingUserToClinicDialog,
+  toggleCreateUserDialog,
+} from "../../store/slices/authSlice";
+import CreateUserDialog from "../../components/dialogs/CreateUserDialog";
 
 const ClinicPage = () => {
   const { clinicId } = useParams();
@@ -24,19 +28,28 @@ const ClinicPage = () => {
   const deleteHandler = (userId: number) => {
     deleteEmployee({ userId, clinicId });
   };
+
   const toggleAddUserDialog = () => {
     dispatch(toggleAddExistingUserToClinicDialog());
   };
 
+  const toggleCreateUserDialogHandler = () => {
+    dispatch(toggleCreateUserDialog());
+  };
+
   return (
     <Box>
-      <Button variant="outlined">Create user</Button>
+      <Button variant="outlined" onClick={toggleCreateUserDialogHandler}>
+        Create user
+      </Button>
 
       <Button variant="outlined" onClick={toggleAddUserDialog}>
         Add existing user to clinic
       </Button>
 
       <AddExistingUserToClinicDialog />
+
+      <CreateUserDialog />
 
       {(isLoading || isDeleteLoading) && <h3>Loading...</h3>}
       {isSuccess &&

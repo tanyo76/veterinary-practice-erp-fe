@@ -6,6 +6,7 @@ type InitialStateType = {
   isLoggedIn: boolean;
   accessToken: string | null;
   addExistingUserToClinicDialogState: boolean;
+  showCreateUserDialog: boolean;
 };
 
 const initialState: InitialStateType = {
@@ -13,6 +14,7 @@ const initialState: InitialStateType = {
   isLoggedIn: false,
   accessToken: null,
   addExistingUserToClinicDialogState: false,
+  showCreateUserDialog: false,
 };
 
 type ActionAuthInfo = Omit<InitialStateType, "isLoggedIn">;
@@ -37,6 +39,9 @@ const authSlice = createSlice({
       state.addExistingUserToClinicDialogState =
         !state.addExistingUserToClinicDialogState;
     },
+    toggleCreateUserDialog: (state) => {
+      state.showCreateUserDialog = !state.showCreateUserDialog;
+    },
   },
 });
 
@@ -45,6 +50,7 @@ export const {
   setAuthState,
   clearAuthState,
   toggleAddExistingUserToClinicDialog,
+  toggleCreateUserDialog
 } = authSlice.actions;
 
 export default authSlice.reducer;

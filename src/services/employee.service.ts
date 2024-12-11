@@ -44,6 +44,14 @@ export const employeeApi = createApi({
       }),
       invalidatesTags: ["Employees"],
     }),
+    createGlobalUser: builder.mutation({
+      query: (body) => ({
+        url: "/users",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 });
 
@@ -54,4 +62,5 @@ export const {
   useLazyGetClinicEmployeesQuery,
   useGetAllUsersQuery,
   useAddEmployeeToClinicMutation,
+  useCreateGlobalUserMutation
 } = employeeApi;
