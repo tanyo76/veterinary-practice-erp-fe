@@ -1,19 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getLocalstorageKey } from "../utils/localstorage.utils";
-
-const envConfig = import.meta.env;
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkBaseQuery from "./baseQuery";
 
 export const clinicApi = createApi({
   reducerPath: "clinicApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: envConfig.VITE_BACKEND_URL,
-    prepareHeaders(headers) {
-      headers.set(
-        "authorization",
-        `Bearer ${getLocalstorageKey("accessToken")}`
-      );
-    },
-  }),
+  baseQuery: rtkBaseQuery,
   endpoints: (builder) => ({
     createClinic: builder.mutation({
       query: (payload) => ({
@@ -23,25 +13,7 @@ export const clinicApi = createApi({
         body: payload,
       }),
     }),
-    getClinic: builder.query({
-      query: () => ({
-        url: `/clinics/${getLocalstorageKey("clinicId")}`,
-        method: "GET",
-        cache: "no-cache",
-      }),
-    }),
-    getClinicEmployees: builder.query({
-      query: () => ({
-        url: `/employeeToClinic/${getLocalstorageKey("clinicId")}`,
-        method: "GET",
-        cache: "no-cache",
-      }),
-    }),
   }),
 });
 
-export const {
-  useGetClinicQuery,
-  useGetClinicEmployeesQuery,
-  useCreateClinicMutation,
-} = clinicApi;
+export const { useCreateClinicMutation } = clinicApi;

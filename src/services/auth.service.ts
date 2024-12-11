@@ -1,6 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import rtkBaseQuery from "./baseQuery";
 
-const envConfig = import.meta.env;
 
 type AccessTokenResponse = {
   success: boolean;
@@ -15,12 +15,13 @@ type LoginInput = {
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: envConfig.VITE_BACKEND_URL }),
+  baseQuery: rtkBaseQuery,
   endpoints: (builder) => ({
     login: builder.mutation<AccessTokenResponse, LoginInput>({
       query: ({ email, password }) => ({
         url: "/auth",
         method: "PUT",
+        cache: "no-cache",
         body: { email, password },
       }),
     }),
@@ -28,6 +29,7 @@ export const authApi = createApi({
       query: ({ email, password, firstName, lastName, role }) => ({
         url: "/auth",
         method: "POST",
+        cache: "no-cache",
         body: { email, password, firstName, lastName, role },
       }),
     }),
