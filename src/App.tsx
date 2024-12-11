@@ -12,12 +12,12 @@ function App() {
   useEffect(() => {
     const accessToken = getLocalstorageKey("accessToken");
     const email = getLocalstorageKey("email");
-    const userId = getLocalstorageKey("userId");
+    const isClinicCreationInProgress = getLocalstorageKey("clinicCreationInProgress");
 
-    if (accessToken && email && !userId) {
+    if (accessToken && email && !isClinicCreationInProgress) {
       dispatch(setAuthState({ email, accessToken }));
       navigate("/dashboard");
-    } else if (accessToken && email && userId) {
+    } else if (accessToken && email && !!isClinicCreationInProgress) {
       navigate("/register");
     } else {
       navigate("/");

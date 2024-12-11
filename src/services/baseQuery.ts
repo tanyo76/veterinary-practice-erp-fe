@@ -23,7 +23,6 @@ const rtkBaseQuery: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
-  console.log(result.error);
   if (
     result.error &&
     (result.error.status === 401 || result.error.status == "FETCH_ERROR")

@@ -36,8 +36,7 @@ const CreateClinicForm = () => {
   const dispatch = useDispatch();
 
   if (isSuccess) {
-    deleteLocalstorageKey("userId");
-    setLocalstorageKey("clinicId", data.clinicId);
+    deleteLocalstorageKey("clinicCreationInProgress");
     const email = getLocalstorageKey("email") as string;
     const accessToken = getLocalstorageKey("accessToken") as string;
     dispatch(setAuthState({ email, accessToken }));

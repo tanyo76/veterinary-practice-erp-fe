@@ -5,7 +5,7 @@ import rtkBaseQuery from "./baseQuery";
 type AccessTokenResponse = {
   success: boolean;
   token: string;
-  clinic: string;
+  userId: string;
 };
 
 type LoginInput = {

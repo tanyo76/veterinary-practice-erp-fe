@@ -32,7 +32,7 @@ const RegisterForm = () => {
   };
 
   useEffect(() => {
-    if (getLocalstorageKey("userId")) {
+    if (getLocalstorageKey("clinicCreationInProgress")) {
       setClinicFormState(true);
     }
   }, []);
@@ -40,6 +40,7 @@ const RegisterForm = () => {
   useEffect(() => {
     if (isSuccess) {
       setLocalstorageKey("userId", data.userId);
+      setLocalstorageKey("clinicCreationInProgress", "true");
       setLocalstorageKey("accessToken", data.accessToken);
 
       const { email } = getValues();
