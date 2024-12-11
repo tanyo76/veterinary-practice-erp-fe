@@ -5,25 +5,36 @@ import { getLocalstorageKey } from "../utils/localstorage.utils";
 export const employeeApi = createApi({
   reducerPath: "employeeApi",
   baseQuery: rtkBaseQuery,
-  tagTypes: ["Employees"],
+  tagTypes: ["Employees", "Clinics"],
   endpoints: (builder) => ({
-    getClinicEmployees: builder.query({
+    getClinics: builder.query({
       query: () => ({
         url: `/clinics/${getLocalstorageKey("userId")}`,
         method: "GET",
       }),
-      providesTags: ["Employees"],
+      providesTags: ["Clinics"],
       keepUnusedDataFor: 0,
     }),
     deleteEmployee: builder.mutation({
-      query: ({ userId }) => ({
-        url: `/users/${userId}`,
+      query: ({ userId, clinicId }) => ({
+        url: `/employeeToClinic/${userId}/${clinicId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Employees"],
     }),
+    getClinicEmployees: builder.query({
+      query: (clinicId) => ({
+        url: `/employeeToClinic/${clinicId}`,
+        method: "GET",
+      }),
+      providesTags: ["Employees"],
+    }),
   }),
 });
 
-export const { useDeleteEmployeeMutation, useGetClinicEmployeesQuery } =
-  employeeApi;
+export const {
+  useDeleteEmployeeMutation,
+  useGetClinicEmployeesQuery,
+  useGetClinicsQuery,
+  useLazyGetClinicEmployeesQuery,
+} = employeeApi;

@@ -5,6 +5,7 @@ import PageNotFound from "../pages/404/NotFoundPage";
 import FormLayout from "../layouts/form/FormLayout";
 import DashboardLayout from "../layouts/dashboard/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
+import ClinicPage from "../pages/clinic/ClinicPage";
 
 const Router = () => {
   const routes = useRoutes([
@@ -35,6 +36,14 @@ const Router = () => {
       element: (
         <DashboardLayout>
           <Dashboard />
+        </DashboardLayout>
+      ),
+    },
+    {
+      path: "/dashboard/:clinicId",
+      element: (
+        <DashboardLayout>
+          <ClinicPage />
         </DashboardLayout>
       ),
     },

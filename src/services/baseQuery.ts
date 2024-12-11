@@ -29,7 +29,7 @@ const rtkBaseQuery: BaseQueryFn<
   ) {
     deleteLocalstorageKey("accessToken");
     deleteLocalstorageKey("email");
-    deleteLocalstorageKey("clinicId");
+    deleteLocalstorageKey("userId");
     window.location.href = envConfig.VITE_FRONTEND_URL;
   }
   return result;
