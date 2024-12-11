@@ -5,7 +5,7 @@ import { getLocalstorageKey } from "../utils/localstorage.utils";
 export const employeeApi = createApi({
   reducerPath: "employeeApi",
   baseQuery: rtkBaseQuery,
-  tagTypes: ["Employees", "Clinics"],
+  tagTypes: ["Employees", "Clinics", "Users"],
   endpoints: (builder) => ({
     getClinics: builder.query({
       query: () => ({
@@ -29,6 +29,21 @@ export const employeeApi = createApi({
       }),
       providesTags: ["Employees"],
     }),
+    getAllUsers: builder.query<void, void>({
+      query: () => ({
+        url: "/users",
+        method: "GET",
+      }),
+      providesTags: ["Users"],
+    }),
+    addEmployeeToClinic: builder.mutation({
+      query: ({ userId, clinicId }) => ({
+        url: `/clinics/${clinicId}`,
+        method: "POST",
+        body: { userId, clinicId },
+      }),
+      invalidatesTags: ["Employees"],
+    }),
   }),
 });
 
@@ -37,4 +52,6 @@ export const {
   useGetClinicEmployeesQuery,
   useGetClinicsQuery,
   useLazyGetClinicEmployeesQuery,
+  useGetAllUsersQuery,
+  useAddEmployeeToClinicMutation,
 } = employeeApi;

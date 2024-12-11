@@ -4,6 +4,9 @@ import {
   useGetClinicEmployeesQuery,
 } from "../../services/employee.service";
 import { Box, Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import AddExistingUserToClinicDialog from "../../components/dialogs/AddExistingUserDialog";
+import { toggleAddExistingUserToClinicDialog } from "../../store/slices/authSlice";
 
 const ClinicPage = () => {
   const { clinicId } = useParams();
@@ -16,16 +19,24 @@ const ClinicPage = () => {
     { isLoading: isDeleteLoading, isError: isErrorDelete },
   ] = useDeleteEmployeeMutation();
 
+  const dispatch = useDispatch();
+
   const deleteHandler = (userId: number) => {
     deleteEmployee({ userId, clinicId });
   };
-  const addExistingUserToClinic = () => {};
+  const toggleAddUserDialog = () => {
+    dispatch(toggleAddExistingUserToClinicDialog());
+  };
 
   return (
     <Box>
       <Button variant="outlined">Create user</Button>
 
-      <Button variant="outlined">Add existing user to clinic</Button>
+      <Button variant="outlined" onClick={toggleAddUserDialog}>
+        Add existing user to clinic
+      </Button>
+
+      <AddExistingUserToClinicDialog />
 
       {(isLoading || isDeleteLoading) && <h3>Loading...</h3>}
       {isSuccess &&
