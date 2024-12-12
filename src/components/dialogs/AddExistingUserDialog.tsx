@@ -14,8 +14,10 @@ import {
   useAddEmployeeToClinicMutation,
   useGetAllUsersQuery,
 } from "../../services/employee.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import FormAlert from "../feedback/FormAlert";
+import { ESeverity } from "../../types/component-props/form-props";
 
 const AddExistingUserToClinicDialog = () => {
   const { addExistingUserToClinicDialogState } = useSelector(
@@ -26,7 +28,10 @@ const AddExistingUserToClinicDialog = () => {
 
   const { isLoading, isError, data, isSuccess } = useGetAllUsersQuery();
 
-  const [addEmployeeToClinic] = useAddEmployeeToClinicMutation();
+  const [
+    addEmployeeToClinic,
+    { isSuccess: isAddSuccess, isError: isAddError, error: addError },
+  ] = useAddEmployeeToClinicMutation();
 
   const dispatch = useDispatch();
 
@@ -35,6 +40,12 @@ const AddExistingUserToClinicDialog = () => {
   };
 
   const [userId, setUserId] = useState(0);
+
+  useEffect(() => {
+    if (isAddSuccess) {
+      toggle();
+    }
+  }, [isAddSuccess]);
 
   return (
     <Dialog
@@ -45,10 +56,8 @@ const AddExistingUserToClinicDialog = () => {
         component: "form",
         onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          console.log(location);
           const clinicId = location.pathname.split("/")[2];
           addEmployeeToClinic({ userId, clinicId });
-          toggle();
         },
       }}
     >
@@ -78,6 +87,14 @@ const AddExistingUserToClinicDialog = () => {
             ))}
         </Select>
       </DialogContent>
+
+      {isAddError && (
+        <FormAlert
+          severity={ESeverity.error}
+          message={(addError as any).data.message}
+        />
+      )}
+
       <DialogActions>
         <Button onClick={toggle}>Cancel</Button>
         <Button type="submit">Add</Button>

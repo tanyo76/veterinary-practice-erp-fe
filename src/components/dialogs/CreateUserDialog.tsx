@@ -12,10 +12,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateUserDialog } from "../../store/slices/authSlice";
 import { useCreateGlobalUserMutation } from "../../services/employee.service";
+import { useEffect } from "react";
+import FormAlert from "../feedback/FormAlert";
+import { ESeverity } from "../../types/component-props/form-props";
 
 const CreateUserDialog = () => {
   const { showCreateUserDialog } = useSelector((store: any) => store.auth);
-  const [createGlobalUser, { isLoading, isError, isSuccess, data }] =
+  const [createGlobalUser, { isLoading, isError, isSuccess, data, error }] =
     useCreateGlobalUserMutation();
 
   const dispatch = useDispatch();
@@ -23,6 +26,12 @@ const CreateUserDialog = () => {
   const toggleCreateUserDialogHandler = () => {
     dispatch(toggleCreateUserDialog());
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toggleCreateUserDialogHandler();
+    }
+  }, [isSuccess]);
 
   return (
     <Dialog
@@ -36,7 +45,6 @@ const CreateUserDialog = () => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
           createGlobalUser(formJson);
-          toggleCreateUserDialogHandler();
         },
       }}
     >
@@ -101,6 +109,14 @@ const CreateUserDialog = () => {
           <MenuItem value="Surgeon">Surgeon</MenuItem>
         </Select>
       </DialogContent>
+
+      {isError && (
+        <FormAlert
+          severity={ESeverity.error}
+          message={(error as any).data.message}
+        />
+      )}
+
       <DialogActions>
         <Button onClick={toggleCreateUserDialogHandler}>Cancel</Button>
         <Button type="submit">Add</Button>

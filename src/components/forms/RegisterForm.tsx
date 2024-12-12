@@ -131,7 +131,7 @@ const RegisterForm = () => {
           {isError && (
             <FormAlert
               severity={ESeverity.error}
-              message={(error as any).data}
+              message={(error as any).data.message}
             />
           )}
 
