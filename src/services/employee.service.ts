@@ -16,9 +16,10 @@ export const employeeApi = createApi({
       keepUnusedDataFor: 0,
     }),
     deleteEmployee: builder.mutation({
-      query: ({ userId, clinicId }) => ({
-        url: `/employeeToClinic/${userId}/${clinicId}`,
-        method: "DELETE",
+      query: ({ userIds, clinicId }) => ({
+        url: `/employeeToClinic`,
+        method: "POST",
+        body: { userIds, clinicId },
       }),
       invalidatesTags: ["Employees"],
     }),
@@ -62,5 +63,5 @@ export const {
   useLazyGetClinicEmployeesQuery,
   useGetAllUsersQuery,
   useAddEmployeeToClinicMutation,
-  useCreateGlobalUserMutation
+  useCreateGlobalUserMutation,
 } = employeeApi;

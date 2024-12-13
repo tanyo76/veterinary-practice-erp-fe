@@ -1,9 +1,6 @@
-import { useParams } from "react-router-dom";
-import {
-  useDeleteEmployeeMutation,
-  useGetClinicEmployeesQuery,
-} from "../../services/employee.service";
-import { Box, Button, Typography } from "@mui/material";
+import { NavLink, useParams } from "react-router-dom";
+import { useGetClinicEmployeesQuery } from "../../services/employee.service";
+import { Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import AddExistingUserToClinicDialog from "../../components/dialogs/AddExistingUserDialog";
 import {
@@ -13,6 +10,7 @@ import {
 import CreateUserDialog from "../../components/dialogs/CreateUserDialog";
 import { useGetClinicByIdQuery } from "../../services/clinic.service";
 import ClinicInfo from "../../components/clinic-components/ClinicInfo";
+import GridComponent from "../../components/grid/GridComponent";
 
 const ClinicPage = () => {
   const { clinicId } = useParams();
@@ -27,17 +25,7 @@ const ClinicPage = () => {
     data: clinicData,
   } = useGetClinicByIdQuery(clinicId);
 
-  const [
-    deleteEmployee,
-    { isLoading: isDeleteLoading, isError: isErrorDelete },
-  ] = useDeleteEmployeeMutation();
-
   const dispatch = useDispatch();
-
-  const deleteHandler = (userId: number) => {
-    deleteEmployee({ userId, clinicId });
-  };
-
   const toggleAddUserDialog = () => {
     dispatch(toggleAddExistingUserToClinicDialog());
   };
@@ -47,10 +35,15 @@ const ClinicPage = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ padding: "10px" }}>
+      <NavLink to="/dashboard">back</NavLink>
       {isGetClinicSuccess && <ClinicInfo clinic={clinicData.clinic} />}
 
-      <Button variant="outlined" onClick={toggleCreateUserDialogHandler}>
+      <Button
+        variant="outlined"
+        onClick={toggleCreateUserDialogHandler}
+        sx={{ marginRight: "10px" }}
+      >
         Create user
       </Button>
 
@@ -62,27 +55,9 @@ const ClinicPage = () => {
 
       <CreateUserDialog />
 
-      {(isLoading || isDeleteLoading || isGetClinicLoading) && <h3>Loading...</h3>}
-      {isSuccess &&
-        data.employees.map((emp: any) => (
-          <Box key={emp.user.id}>
-            <h4>
-              {emp.user.firstName} {emp.user.lastName}, email: {emp.user.email},
-              role: {emp.user.role}
-            </h4>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => deleteHandler(emp.user.id)}
-            >
-              delete
-            </Button>
-          </Box>
-        ))}
+      {isSuccess && <GridComponent rows={data.employees} clinicId={clinicId} />}
 
-      {!isLoading && isSuccess && data.employees.length == 0 && (
-        <h3>There are no employees yet!</h3>
-      )}
+      {(isLoading || isGetClinicLoading) && <h3>Loading...</h3>}
     </Box>
   );
 };

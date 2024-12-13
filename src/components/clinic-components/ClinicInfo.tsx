@@ -19,7 +19,7 @@ type ClinicProps = {
 
 const ClinicInfo = ({ clinic }: ClinicProps) => {
   return (
-    <Box>
+    <Box sx={{ margin: "10px 0px"}}>
       <Typography>Clinic name: {clinic.name}</Typography>
       <Typography>Address: {clinic.address}</Typography>
       <Typography>
