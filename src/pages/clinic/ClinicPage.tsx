@@ -3,7 +3,7 @@ import {
   useDeleteEmployeeMutation,
   useGetClinicEmployeesQuery,
 } from "../../services/employee.service";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import AddExistingUserToClinicDialog from "../../components/dialogs/AddExistingUserDialog";
 import {
@@ -11,12 +11,21 @@ import {
   toggleCreateUserDialog,
 } from "../../store/slices/authSlice";
 import CreateUserDialog from "../../components/dialogs/CreateUserDialog";
+import { useGetClinicByIdQuery } from "../../services/clinic.service";
+import ClinicInfo from "../../components/clinic-components/ClinicInfo";
 
 const ClinicPage = () => {
   const { clinicId } = useParams();
 
   const { isLoading, isError, isSuccess, data } =
     useGetClinicEmployeesQuery(clinicId);
+
+  const {
+    isLoading: isGetClinicLoading,
+    isError: isGetClinicError,
+    isSuccess: isGetClinicSuccess,
+    data: clinicData,
+  } = useGetClinicByIdQuery(clinicId);
 
   const [
     deleteEmployee,
@@ -39,6 +48,8 @@ const ClinicPage = () => {
 
   return (
     <Box>
+      {isGetClinicSuccess && <ClinicInfo clinic={clinicData.clinic} />}
+
       <Button variant="outlined" onClick={toggleCreateUserDialogHandler}>
         Create user
       </Button>
@@ -51,7 +62,7 @@ const ClinicPage = () => {
 
       <CreateUserDialog />
 
-      {(isLoading || isDeleteLoading) && <h3>Loading...</h3>}
+      {(isLoading || isDeleteLoading || isGetClinicLoading) && <h3>Loading...</h3>}
       {isSuccess &&
         data.employees.map((emp: any) => (
           <Box key={emp.user.id}>

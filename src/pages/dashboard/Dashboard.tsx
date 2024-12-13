@@ -1,6 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useGetClinicsQuery } from "../../services/employee.service";
 import { useNavigate } from "react-router-dom";
+import ClinicInfo from "../../components/clinic-components/ClinicInfo";
 
 const Dashboard = () => {
   const { isError, isLoading, isSuccess, data, error } = useGetClinicsQuery();
@@ -16,15 +17,12 @@ const Dashboard = () => {
       {!isLoading &&
         isSuccess &&
         data.clinics.map((clinic: any) => (
-          <Box key={clinic.id}>
-            <Button onClick={() => goToClinicInfoHandler(clinic.id)}>Go to clinic</Button>
-            <Typography>Clinic name: {clinic.name}</Typography>
-            <Typography>Address: {clinic.address}</Typography>
-            <Typography>
-              Owner:{" "}
-              {`${clinic.owner.firstName} ${clinic.owner.lastName} (${clinic.owner.email})`}
-            </Typography>
-          </Box>
+          <>
+            <Button onClick={() => goToClinicInfoHandler(clinic.id)}>
+              Go to clinic
+            </Button>
+            <ClinicInfo clinic={clinic} />
+          </>
         ))}
 
       {!isLoading && isSuccess && data.clinics.length == 0 && (

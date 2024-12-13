@@ -13,7 +13,14 @@ export const clinicApi = createApi({
         body: payload,
       }),
     }),
+    getClinicById: builder.query({
+      query: (clinicId) => ({
+        url: `/clinics?clinicId=${clinicId}`,
+        method: "GET",
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
-export const { useCreateClinicMutation } = clinicApi;
+export const { useCreateClinicMutation, useGetClinicByIdQuery } = clinicApi;
