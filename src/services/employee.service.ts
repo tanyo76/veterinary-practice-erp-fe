@@ -1,20 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import rtkBaseQuery from "./baseQuery";
-import { getLocalstorageKey } from "../utils/localstorage.utils";
 
 export const employeeApi = createApi({
   reducerPath: "employeeApi",
   baseQuery: rtkBaseQuery,
-  tagTypes: ["Employees", "Clinics", "Users"],
+  tagTypes: ["Employees", "Users"],
   endpoints: (builder) => ({
-    getClinics: builder.query({
-      query: () => ({
-        url: `/clinics/${getLocalstorageKey("userId")}`,
-        method: "GET",
-      }),
-      providesTags: ["Clinics"],
-      keepUnusedDataFor: 0,
-    }),
     deleteEmployee: builder.mutation({
       query: ({ userIds, clinicId }) => ({
         url: `/employeeToClinic`,
@@ -59,7 +50,6 @@ export const employeeApi = createApi({
 export const {
   useDeleteEmployeeMutation,
   useGetClinicEmployeesQuery,
-  useGetClinicsQuery,
   useLazyGetClinicEmployeesQuery,
   useGetAllUsersQuery,
   useAddEmployeeToClinicMutation,

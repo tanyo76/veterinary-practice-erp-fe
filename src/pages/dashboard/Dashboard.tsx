@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useGetClinicsQuery } from "../../services/employee.service";
+import { useGetClinicsQuery } from "../../services/clinic.service";
 import { useNavigate } from "react-router-dom";
 import ClinicInfo from "../../components/clinic-components/ClinicInfo";
 import LoadingComponent from "../../components/LoadingComponent";
