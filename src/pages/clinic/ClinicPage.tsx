@@ -11,6 +11,7 @@ import CreateUserDialog from "../../components/dialogs/CreateUserDialog";
 import { useGetClinicByIdQuery } from "../../services/clinic.service";
 import ClinicInfo from "../../components/clinic-components/ClinicInfo";
 import GridComponent from "../../components/grid/GridComponent";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const ClinicPage = () => {
   const { clinicId } = useParams();
@@ -34,6 +35,10 @@ const ClinicPage = () => {
     dispatch(toggleCreateUserDialog());
   };
 
+  if (isLoading || isGetClinicLoading) {
+    return <LoadingComponent />;
+  }
+
   return (
     <Box sx={{ padding: "10px" }}>
       <NavLink to="/dashboard">back</NavLink>
@@ -47,7 +52,11 @@ const ClinicPage = () => {
         Create user
       </Button>
 
-      <Button variant="outlined" onClick={toggleAddUserDialog}>
+      <Button
+        variant="outlined"
+        onClick={toggleAddUserDialog}
+        sx={{ marginRight: "10px" }}
+      >
         Add existing user to clinic
       </Button>
 
@@ -56,8 +65,6 @@ const ClinicPage = () => {
       <CreateUserDialog />
 
       {isSuccess && <GridComponent rows={data.employees} clinicId={clinicId} />}
-
-      {(isLoading || isGetClinicLoading) && <h3>Loading...</h3>}
     </Box>
   );
 };

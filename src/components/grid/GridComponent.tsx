@@ -58,7 +58,9 @@ const GridComponent = ({ rows, clinicId }: any) => {
 
   return (
     <>
-      <Button onClick={deleteHandler}>remove selected employees</Button>
+      <Button onClick={deleteHandler} variant="outlined" color="error">
+        remove selected employees
+      </Button>
       <DataGrid
         rows={rows}
         sx={{ marginTop: "10px", maxHeight: "80vh" }}
