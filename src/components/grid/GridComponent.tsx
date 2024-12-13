@@ -58,12 +58,12 @@ const GridComponent = ({ rows, clinicId }: any) => {
 
   return (
     <>
-      <Button onClick={deleteHandler} variant="outlined" color="error">
+      {!!rowSelectionModel.length && <Button onClick={deleteHandler} variant="outlined" color="error">
         remove selected employees
-      </Button>
+      </Button>}
       <DataGrid
         rows={rows}
-        sx={{ marginTop: "10px", maxHeight: "80vh" }}
+        sx={{ marginTop: "10px", maxHeight: "65vh" }}
         columns={columns}
         loading={isDeleteLoading}
         rowSelectionModel={rowSelectionModel}
